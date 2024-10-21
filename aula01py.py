@@ -25,17 +25,19 @@ print('------------------------------------')
 
 listaDeNumeros = [1, 2, 3, 4, 5]
 listaDeLetras = ['a', 'e', 'i', 'o', 'u']
-listaDeLogicos = [True, False, False, True]
-listaMista = ['Gabriel', 9, '3º Elemento', True, 'Maria']
+# listaDeLogicos = [True, False, False, True]
+listaMista = ['Gabriel', 9, '3º Elemento', True, 8.9]
 
 # Atividade 1
 
+print('Elementos da lista de números: ')
 for i in listaDeNumeros:
   print(i)
 
 print('------------------------------------')
 # Atividade 2
 
+print('Elementos da lista de letras: ')
 for i in listaDeLetras:
   print(i)
 
@@ -44,5 +46,25 @@ print('------------------------------------')
 
 print(listaMista[2])
 
+
 print('------------------------------------')
-# Atividade 4
+
+# *****************************************
+for indice, vogal in enumerate(listaDeLetras, start=1):
+    print(f'vogal {indice}: {vogal}')
+# *****************************************
+
+print('------------------------------------')
+
+lista_compras = [
+  '10 pcts. de arroz', 
+  '3 pcts. feijão', 
+  '5 kgs carne', 
+  '2 caixas ovos', 
+  '2 caixas leite'
+  ]
+
+print('LISTA DE COMPRAS', end='\n\n')
+for indice, item in enumerate(lista_compras, start=1):
+  print(f"Produto {indice}:  [  ] {item}" )
+
