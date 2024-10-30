@@ -300,12 +300,8 @@ while True:
 # media = alunos[nomeAluno]['Media']
 # print(media)
 
-melhorMedia = 0
-contador = 0
-
 print('\nAlunos cadastrados: ')
-for nome, dados in alunos.items():
-    contador += 1
+for contador,(nome, dados) in enumerate(alunos.items(), start=1):
     print(f'\n{contador}º aluno(a)')
     print(f"Nome: {dados['Nome']}")
     print(f"Idade: {dados['Idade']}")
@@ -316,6 +312,8 @@ for nome, dados in alunos.items():
     print(f'Média: {dados['Media']:.2f}')
     print('------------------------------------')
 
+melhorMedia = 0
+
 for nome, dados in alunos.items():
     if dados['Media'] > melhorMedia:
         melhorMedia = dados['Media']
@@ -324,17 +322,3 @@ for nome, dados in alunos.items():
 print('\n#######################################################################')
 print(f'Parabéns! O(a) aluno(a) {melhorAluno} tem a melhor média da turma! Média: {melhorMedia:.2f}')
 print('#######################################################################')
-    
-
-
-
-
-
-
-
-
-    
-
-
-
-
