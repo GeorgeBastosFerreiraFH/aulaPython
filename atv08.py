@@ -67,7 +67,6 @@ def atualizarProduto():
                     qntdNovo = int(input('Digite a quantidade nova: '))
                     produtos[produto]['Quantidade'] = qntdNovo
                 elif continuar == '0':
-                    print("Programa encerrado!")
                     break
                 else:
                     print('Opção inválida.')
