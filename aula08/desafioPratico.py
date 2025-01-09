@@ -46,7 +46,6 @@ def analisar_culturas():
     for fazenda in producao_anual["Fazendas"].values():
         for cultura, producao in fazenda.items():
             if cultura not in culturas_totais:
-                # Inicializa a lista para todos os 6 anos (2019 a 2024)
                 culturas_totais[cultura] = [0] * len(producao_anual["Ano"])
             for i, quantidade in enumerate(producao):
                 culturas_totais[cultura][i] += quantidade
