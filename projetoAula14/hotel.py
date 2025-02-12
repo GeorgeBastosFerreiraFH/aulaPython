@@ -13,6 +13,7 @@ class Hotel:
             raise ValueError("Nome, telefone e email são obrigatórios.")
         if any(cliente.email == email for cliente in self.clientes):
             raise ValueError("Já existe um cliente com este e-mail.")
+
         cliente = Cliente(self.contador_id, nome, telefone, email)
         self.clientes.append(cliente)
         self.contador_id += 1
@@ -120,16 +121,96 @@ class Hotel:
 
     def listar_reservas_por_quarto(self, quarto):
         return [reserva for reserva in self.reservas if reserva.quarto == quarto]
+    
+class Pessoa:
+    def __init__(self, nome, telefone, email):
+        self.__nome = nome
+        self.__telefone = telefone
+        self.__email = email
+        self._validar_dados()
 
-class Cliente:
-    def __init__(self, id, nome, telefone, email):
-        self.id = id
-        self.nome = nome
-        self.telefone = telefone
-        self.email = email
+    def _validar_dados(self):
+        if not self.__nome or not self.__telefone or not self.__email:
+            raise ValueError("Nome, telefone e email são obrigatórios.")
+        self.set_telefone(self.__telefone)
+        self.set_email(self.__email)
+
+    # Getters
+    def get_nome(self):
+        return self.__nome
+
+    def get_telefone(self):
+        return self.__telefone
+
+    def get_email(self):
+        return self.__email
+
+    # Setters com validação
+    def set_nome(self, nome):
+        if not nome:
+            raise ValueError("Nome não pode estar vazio.")
+        self.__nome = nome
+
+    def set_telefone(self, telefone):
+        if not isinstance(telefone, str) or not any(c.isdigit() for c in telefone):
+            raise ValueError("Telefone deve conter números.")
+        self.__telefone = telefone
+
+    def set_email(self, email):
+        if not isinstance(email, str) or "@" not in email or "." not in email:
+            raise ValueError("E-mail inválido.")
+        self.__email = email
+
+    def exibir_informacoes(self):
+        return f"Nome: {self.__nome} - Telefone: {self.__telefone} - Email: {self.__email}"
 
     def __str__(self):
-        return f"ID: {self.id} - Cliente: {self.nome} - Telefone: {self.telefone} - Email: {self.email}"
+        return self.exibir_informacoes()
+
+class Cliente(Pessoa):
+    def __init__(self, id, nome, telefone, email):
+        self.__id = id  # Atribuição direta do ID durante a inicialização
+        super().__init__(nome, telefone, email)
+
+    # Getter para ID
+    def get_id(self):
+        return self.__id
+
+    def exibir_informacoes(self):
+        return f"ID: {self.__id} - {super().exibir_informacoes()}"
+
+    # Properties para compatibilidade com o código existente
+    @property
+    def id(self):
+        return self.__id
+    
+    @property
+    def nome(self):
+        return self.get_nome()
+    
+    @nome.setter
+    def nome(self, valor):
+        self.set_nome(valor)
+    
+    @property
+    def telefone(self):
+        return self.get_telefone()
+    
+    @telefone.setter
+    def telefone(self, valor):
+        self.set_telefone(valor)
+    
+    @property
+    def email(self):
+        return self.get_email()
+    
+    @email.setter
+    def email(self, valor):
+        self.set_email(valor)
+
+    def __str__(self):
+        return self.exibir_informacoes()
+
 
 class Quarto:
     def __init__(self, numero, tipo, preco, disponibilidade):
@@ -166,5 +247,4 @@ class Reserva:
             f"Check-Out: {self.checkOut.strftime('%d/%m/%Y')} - "
             f"Status: {self.status}"
         )
-
 
