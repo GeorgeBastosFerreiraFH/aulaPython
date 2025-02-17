@@ -22,3 +22,5 @@ create table matriculas(
     foreign key (id_curso) references cursos(id_curso),
     data_matricual date
 );
+
+alter table matriculas rename column data_matricual to data_matricula;
