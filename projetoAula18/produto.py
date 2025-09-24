@@ -7,7 +7,6 @@ class Produtos:
         self.criar_tabela()
 
     def criar_tabela(self):
-        """Cria a tabela 'produtos' se ela ainda não existir."""
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS produtos(
             id_produto INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,7 +19,6 @@ class Produtos:
         self.conexao.commit()
 
     def adicionar_produto(self, nome, descricao, qntd_estoque, preco):
-        """Adiciona um novo produto à tabela 'produtos'."""
         try:
             self.cursor.execute("""
             INSERT INTO produtos(nome, descricao, qntd_estoque, preco)
@@ -32,22 +30,32 @@ class Produtos:
             print(f"Erro ao adicionar produto: {e}")
 
     def ver_produtos(self):
-        """Exibe todos os produtos cadastrados na tabela 'produtos'."""
         try:
             self.cursor.execute("SELECT * FROM produtos")
             produtos = self.cursor.fetchall()
-
             if not produtos:
-                print("Nenhum produto cadastrado")
+                print("Nenhum produto cadastrado!")
             else:
-                for produto in produtos:
-                    print(produto)
+                print("\n--- Lista de Produtos ---")
+                for id_produto, nome, descricao, qntd_estoque, preco in produtos:
+                    print("\n---------------------------")
+                    print(f"ID do produto: {id_produto}")
+                    print(f"Nome: {nome}")
+                    print(f"Descrição: {descricao}")
+                    print(f"Quantidade: {qntd_estoque}")
+                    print(f"Preço: R$ {preco:.2f}")
+                    print("---------------------------")
         except Exception as e:
             print(f"Erro ao listar produtos: {e}")
 
     def deletar_produto(self, id):
-        """Deleta um produto da tabela 'produtos' pelo ID."""
         try:
+            self.cursor.execute("SELECT COUNT(*) FROM produtos")
+            total = self.cursor.fetchone()[0]
+            if total == 0:
+                print("Nenhum produto cadastrado!")
+                return
+
             self.cursor.execute("SELECT COUNT(*) FROM produtos WHERE id_produto = ?", (id,))
             resultado = self.cursor.fetchone()[0]
             if resultado == 0:
@@ -60,7 +68,6 @@ class Produtos:
             print(f"Erro ao deletar produto: {e}")
 
     def editar_produto(self, nome, descricao, qntd_estoque, preco, id):
-        """Edita os dados de um produto na tabela 'produtos' pelo ID."""
         try:
             self.cursor.execute("SELECT COUNT(*) FROM produtos WHERE id_produto = ?", (id,))
             resultado = self.cursor.fetchone()[0]
@@ -68,7 +75,8 @@ class Produtos:
                 print("Produto não encontrado!")
             else:
                 self.cursor.execute("""
-                UPDATE produtos SET nome = ?, descricao = ?, qntd_estoque = ?, preco = ? WHERE id_produto = ?
+                UPDATE produtos SET nome = ?, descricao = ?, qntd_estoque = ?, preco = ?
+                WHERE id_produto = ?
                 """, (nome, descricao, qntd_estoque, preco, id))
                 self.conexao.commit()
                 print("Produto editado com sucesso!")
@@ -76,6 +84,5 @@ class Produtos:
             print(f"Erro ao editar produto: {e}")
 
     def fechar_conexao(self):
-        """Fecha a conexão com o banco de dados."""
         self.cursor.close()
         self.conexao.close()
